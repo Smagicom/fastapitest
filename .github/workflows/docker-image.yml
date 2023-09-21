@@ -20,8 +20,8 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-    - name: Create conteiner
-      run: docker run -p 8080:8080 my-image-name:$(date +%s)
+    - name: Run Python
+      run: python3 main.py
 
     - name: install Test Unit
       run: pip3 install pytest
