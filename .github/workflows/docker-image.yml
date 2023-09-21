@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ '3.x']
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    - name: Create conteiner
+      run: docker run -p 8080:8080 my-image-name:$(date +%s)
+
+    - name: install Test Unit
+      run: pip3 install pytest
+
+    - name: Test Unit
+      run: pytest test_api.py
+
+    - name: Build 
+      run: python3 -m py_compile main.py
+    
+
+      
